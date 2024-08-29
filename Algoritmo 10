@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+int main() {
+    // Exibir a contagem regressiva de 10 a 1
+    printf("Contagem regressiva:\n");
+    for(int i = 10; i >= 1; i--) {
+        printf("%d\n", i);
+    }
+
+    // Mensagem ao final da contagem
+    printf("Feliz Ano Novo!\n");
+
+    return 0;
+}

@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100 // Definição do tamanho máximo da fila
+
+typedef struct {
+    int frente, tras, tamanho;
+    int array[MAX];
+} Fila;
+
+// Inicializa a fila
+void inicializarFila(Fila *f) {
+    f->frente = 0;
+    f->tras = -1;
+    f->tamanho = 0;
+}
+
+// Verifica se a fila está vazia
+int isEmpty(Fila *f) {
+    return f->tamanho == 0;
+}
+
+// Verifica se a fila está cheia
+int isFull(Fila *f) {
+    return f->tamanho == MAX;
+}
+
+// Adiciona um elemento ao final da fila
+void enqueue(Fila *f, int valor) {
+    if (isFull(f)) {
+        printf("Fila cheia. Não é possível adicionar o elemento %d.\n", valor);
+        return;
+    }
+    f->tras = (f->tras + 1) % MAX;
+    f->array[f->tras] = valor;
+    f->tamanho++;
+    printf("Elemento %d adicionado à fila.\n", valor);
+}
+
+// Remove e retorna o elemento do início da fila
+int dequeue(Fila *f) {
+    if (isEmpty(f)) {
+        printf("Fila vazia. Não é possível remover um elemento.\n");
+        return -1; // Valor de erro
+    }
+    int valor = f->array[f->frente];
+    f->frente = (f->frente + 1) % MAX;
+    f->tamanho--;
+    return valor;
+}
+
+// Retorna o elemento no início da fila sem removê-lo
+int front(Fila *f) {
+    if (isEmpty(f)) {
+        printf("Fila vazia. Não há elemento no início.\n");
+        return -1; // Valor de erro
+    }
+    return f->array[f->frente];
+}
+
+// Função principal para testar a fila
+int main() {
+    Fila f;
+    inicializarFila(&f);
+
+    // Testando as operações da fila
+    enqueue(&f, 10);
+    enqueue(&f, 20);
+    enqueue(&f, 30);
+
+    printf("Início da fila: %d\n", front(&f));
+
+    printf("Elemento removido: %d\n", dequeue(&f));
+    printf("Elemento removido: %d\n", dequeue(&f));
+    printf("Elemento removido: %d\n", dequeue(&f));
+    printf("Elemento removido: %d\n", dequeue(&f)); // Tentativa de remover da fila vazia
+
+    return 0;
+}

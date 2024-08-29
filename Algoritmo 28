@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int main() {
+    int a, b, c, d;
+    int determinante;
+
+    // Entrada dos elementos da matriz 2x2
+    printf("Digite os elementos da matriz 2x2:\n");
+    printf("Elemento [1][1]: ");
+    scanf("%d", &a);
+    printf("Elemento [1][2]: ");
+    scanf("%d", &b);
+    printf("Elemento [2][1]: ");
+    scanf("%d", &c);
+    printf("Elemento [2][2]: ");
+    scanf("%d", &d);
+
+    // Cálculo do determinante
+    determinante = (a * d) - (b * c);
+
+    // Exibição do resultado
+    printf("O determinante da matriz 2x2 é: %d\n", determinante);
+
+    return 0;
+}

@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100 // Definição do tamanho máximo da pilha
+
+typedef struct {
+    int top;
+    int array[MAX];
+} Pilha;
+
+// Inicializa a pilha
+void inicializarPilha(Pilha *p) {
+    p->top = -1; // A pilha está vazia quando o índice do topo é -1
+}
+
+// Verifica se a pilha está vazia
+int isEmpty(Pilha *p) {
+    return p->top == -1;
+}
+
+// Verifica se a pilha está cheia
+int isFull(Pilha *p) {
+    return p->top == MAX - 1;
+}
+
+// Adiciona um elemento ao topo da pilha
+void push(Pilha *p, int valor) {
+    if (isFull(p)) {
+        printf("Pilha cheia. Não é possível adicionar o elemento %d.\n", valor);
+        return;
+    }
+    p->array[++(p->top)] = valor;
+    printf("Elemento %d adicionado à pilha.\n", valor);
+}
+
+// Remove e retorna o elemento do topo da pilha
+int pop(Pilha *p) {
+    if (isEmpty(p)) {
+        printf("Pilha vazia. Não é possível remover um elemento.\n");
+        return -1; // Valor de erro
+    }
+    return p->array[(p->top)--];
+}
+
+// Retorna o elemento no topo da pilha sem removê-lo
+int peek(Pilha *p) {
+    if (isEmpty(p)) {
+        printf("Pilha vazia. Não há elemento no topo.\n");
+        return -1; // Valor de erro
+    }
+    return p->array[p->top];
+}
+
+// Função principal para testar a pilha
+int main() {
+    Pilha p;
+    inicializarPilha(&p);
+
+    // Testando as operações da pilha
+    push(&p, 10);
+    push(&p, 20);
+    push(&p, 30);
+
+    printf("Topo da pilha: %d\n", peek(&p));
+
+    printf("Elemento removido: %d\n", pop(&p));
+    printf("Elemento removido: %d\n", pop(&p));
+    printf("Elemento removido: %d\n", pop(&p));
+    printf("Elemento removido: %d\n", pop(&p)); // Tentativa de remover da pilha vazia
+
+    return 0;
+}

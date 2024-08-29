@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    int binario, decimal = 0, i = 0, digito;
+
+    printf("Digite um numero binario: ");
+    scanf("%d", &binario);
+
+    while (binario != 0) {
+        digito = binario % 10;         // Obtém o último dígito do número binário
+        decimal += digito * pow(2, i); // Converte o dígito para decimal e soma ao total
+        binario /= 10;                 // Remove o último dígito do número binário
+        i++;                           // Incrementa a posição
+    }
+
+    printf("O valor decimal e: %d\n", decimal);
+
+    return 0;
+}

@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    srand(time(0)); // Semente para a geração de números aleatórios
+    int numeroSecreto = rand() % 100; // Número aleatório entre 0 e 99
+
+    int palpite;
+    printf("Bem-vindo ao Jogo de Adivinhacao!\n");
+    printf("Tente adivinhar o numero secreto entre 0 e 99.\n");
+
+    do {
+        printf("Insira seu palpite: ");
+        scanf("%d", &palpite);
+
+        if (palpite == numeroSecreto) {
+            printf("Parabens! Voce acertou o numero!\n");
+        } else if (palpite < numeroSecreto) {
+            printf("O numero secreto e maior!\n");
+        } else {
+            printf("O numero secreto e menor!\n");
+        }
+    } while (palpite != numeroSecreto); // Continua até o usuário acertar
+
+    return 0;
+}

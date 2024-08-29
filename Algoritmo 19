@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+// Função para verificar se um número é perfeito
+int eh_perfeito(int numero) {
+    if (numero <= 0) {
+        return 0; // Números não positivos não são considerados perfeitos
+    }
+
+    int soma = 0;
+    // Encontrar todos os divisores próprios do número
+    for (int i = 1; i <= numero / 2; i++) {
+        if (numero % i == 0) {
+            soma += i;
+        }
+    }
+
+    // Verificar se a soma dos divisores próprios é igual ao número
+    return (soma == numero);
+}
+
+int main() {
+    int numero;
+    
+    // Solicita ao usuário para inserir o número
+    printf("Digite um número: ");
+    scanf("%d", &numero);
+    
+    // Verifica se o número é perfeito
+    if (eh_perfeito(numero)) {
+        printf("%d é um número perfeito.\n", numero);
+    } else {
+        printf("%d não é um número perfeito.\n", numero);
+    }
+    
+    return 0;
+}

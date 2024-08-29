@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+// Função para calcular a potência
+double potencia(double base, int expoente) {
+    double resultado = 1.0;
+
+    // Calcula a potência
+    for (int i = 0; i < expoente; i++) {
+        resultado *= base;
+    }
+
+    return resultado;
+}
+
+int main() {
+    double base;
+    int expoente;
+
+    // Solicita ao usuário o número base e o expoente
+    printf("Digite a base: ");
+    scanf("%lf", &base);
+    printf("Digite o expoente: ");
+    scanf("%d", &expoente);
+
+    // Calcula a potência
+    double resultado = potencia(base, expoente);
+
+    // Exibe o resultado
+    printf("%.2lf elevado à potência %d é igual a %.2lf\n", base, expoente, resultado);
+
+    return 0;
+}

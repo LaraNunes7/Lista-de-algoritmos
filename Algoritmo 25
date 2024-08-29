@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main() {
+    int decimal;
+    int binario[32]; // Array para armazenar o binário (32 bits são suficientes para representar um int)
+    int i = 0;
+
+    printf("Digite um numero decimal: ");
+    scanf("%d", &decimal);
+
+    // Verifica se o número é 0
+    if (decimal == 0) {
+        printf("O valor binario e: 0\n");
+        return 0;
+    }
+
+    // Converte o número decimal para binário
+    while (decimal > 0) {
+        binario[i] = decimal % 2; // Armazena o resto da divisão por 2 (0 ou 1)
+        decimal /= 2;             // Divide o número por 2
+        i++;
+    }
+
+    // Imprime o número binário em ordem reversa
+    printf("O valor binario e: ");
+    for (int j = i - 1; j >= 0; j--) {
+        printf("%d", binario[j]);
+    }
+    printf("\n");
+
+    return 0;
+}

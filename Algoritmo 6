@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+int main() {
+    int codigo;
+    double area;
+    const double PI = 3.141592653589793;
+
+    // Ler o código (interpretado como o raio do círculo)
+    printf("Digite o código (valor inteiro para o raio do círculo): ");
+    scanf("%d", &codigo);
+
+    // Calcular a área do círculo
+    area = PI * codigo * codigo;
+
+    // Exibir o resultado
+    printf("A área do círculo com raio %d é: %.2lf\n", codigo, area);
+
+    return 0;
+}

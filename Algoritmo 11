@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main() {
+    int numero, i;
+    int ehPrimo = 1; // Suponha que o número é primo
+
+    // Ler o número para verificar se é primo
+    printf("Digite um número inteiro positivo: ");
+    scanf("%d", &numero);
+
+    // Verificar se o número é menor que 2
+    if (numero < 2) {
+        ehPrimo = 0; // Números menores que 2 não são primos
+    } else {
+        // Verificar divisibilidade por números de 2 até a raiz quadrada do número
+        for (i = 2; i <= numero / 2; i++) {
+            if (numero % i == 0) {
+                ehPrimo = 0; // Se o número for divisível por i, não é primo
+                break;
+            }
+        }
+    }
+
+    // Exibir o resultado
+    if (ehPrimo) {
+        printf("%d é um número primo.\n", numero);
+    } else {
+        printf("%d não é um número primo.\n", numero);
+    }
+
+    return 0;
+}

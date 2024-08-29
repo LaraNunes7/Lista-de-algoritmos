@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <string.h> // Necessário para a função strchr
+
+int stringParaInteiro(const char *str) {
+    int resultado = 0;
+    int sinal = 1;
+    
+    // Verifica se o número é negativo
+    if (*str == '-') {
+        sinal = -1;
+        str++;
+    } else if (*str == '+') {
+        str++;
+    }
+
+    // Converte os caracteres numéricos para um número inteiro
+    while (*str >= '0' && *str <= '9') {
+        resultado = resultado * 10 + (*str - '0');
+        str++;
+    }
+
+    return resultado * sinal;
+}
+
+int main() {
+    char str[100];
+    int numero;
+
+    printf("Digite uma string que representa um numero inteiro: ");
+    fgets(str, sizeof(str), stdin); // Lê a string com espaços
+    
+    // Remove o caractere de nova linha, se houver
+    char *pos = strchr(str, '\n');
+    if (pos != NULL) {
+        *pos = '\0';
+    }
+
+    // Converte a string para um número inteiro
+    numero = stringParaInteiro(str);
+
+    printf("O numero inteiro e: %d\n", numero);
+
+    return 0;
+}

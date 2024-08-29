@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define MAX 100 // Definição do tamanho máximo da pilha
+
+// Função para empilhar um valor
+void empilhar(double *pilha, int *topo, double valor) {
+    pilha[++(*topo)] = valor;
+}
+
+// Função para desempilhar um valor
+double desempilhar(double *pilha, int *topo) {
+    return pilha[(*topo)--];
+}
+
+// Função para avaliar a expressão pós-fixa
+double avaliarPosfixa(const char *expressao) {
+    double pilha[MAX];
+    int topo = -1;
+
+    for (int i = 0; expressao[i] != '\0'; i++) {
+        char c = expressao[i];
+
+        // Ignorar espaços
+        if (isspace(c)) {
+            continue;
+        }
+
+        // Se o caractere for um número, empilhe-o
+        if (isdigit(c) || c == '.') {
+            double valor = 0;
+            double fator = 1;
+            int decimal = 0;
+
+            // Processa a parte inteira do número
+            while (isdigit(c)) {
+                valor = valor * 10 + (c - '0');
+                c = expressao[++i];
+            }
+
+            // Processa a parte decimal, se houver
+            if (c == '.') {
+                decimal = 1;
+                c = expressao[++i];
+                while (isdigit(c)) {
+                    valor = valor + (c - '0') * (fator *= 0.1);
+                    c = expressao[++i];
+                }
+            }
+
+            empilhar(pilha, &topo, valor);
+            i--; // Ajusta o índice após sair do loop de dígitos e ponto decimal
+        } else if (c == '+') {
+            double b = desempilhar(pilha, &topo);
+            double a = desempilhar(pilha, &topo);
+            empilhar(pilha, &topo, a + b);
+        } else if (c == '-') {
+            double b = desempilhar(pilha, &topo);
+            double a = desempilhar(pilha, &topo);
+            empilhar(pilha, &topo, a - b);
+        } else if (c == '*') {
+            double b = desempilhar(pilha, &topo);
+            double a = desempilhar(pilha, &topo);
+            empilhar(pilha, &topo, a * b);
+        } else if (c == '/') {
+            double b = desempilhar(pilha, &topo);
+            double a = desempilhar(pilha, &topo);
+            if (b != 0) {
+                empilhar(pilha, &topo, a / b);
+            } else {
+                printf("Erro: Divisão por zero.\n");
+                return -1; // Código de erro
+            }
+        } else if (c == '^') {
+            double b = desempilhar(pilha, &topo);
+            double a = desempilhar(pilha, &topo);
+            double resultado = 1;
+            for (int j = 0; j < b; j++) {
+                resultado *= a;
+            }
+            empilhar(pilha, &topo, resultado);
+        }
+    }
+
+    // O resultado final deve estar no topo da pilha
+    return desempilhar(pilha, &topo);
+}
+
+int main() {
+    char posfixa[MAX];
+
+    printf("Digite a expressão pós-fixa: ");
+    fgets(posfixa, sizeof(posfixa), stdin);
+
+    // Remove o caractere de nova linha, se houver
+    char *pos;
+    if ((pos = strchr(posfixa, '\n')) != NULL) {
+        *pos = '\0';
+    }
+
+    double resultado = avaliarPosfixa(posfixa);
+    if (resultado != -1) {
+        printf("Resultado da expressão pós-fixa: %.2f\n", resultado);
+    }
+
+    return 0;
+}

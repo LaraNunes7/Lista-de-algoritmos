@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int main() {
+    int N;
+    int soma;
+
+    // Ler o valor de N
+    printf("Digite um número inteiro positivo N: ");
+    scanf("%d", &N);
+
+    // Calcular a soma dos primeiros N números naturais usando a fórmula
+    soma = N * (N + 1) / 2;
+
+    // Exibir o resultado
+    printf("A soma dos primeiros %d números naturais é: %d\n", N, soma);
+
+    return 0;
+}

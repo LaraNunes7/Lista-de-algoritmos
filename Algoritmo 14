@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int main() {
+    int num, inverso = 0, resto;
+
+    // Solicita ao usuário o número a ser invertido
+    printf("Digite um número: ");
+    scanf("%d", &num);
+
+    // Armazena o número original para exibir depois
+    int num_original = num;
+
+    // Inverte o número
+    while (num != 0) {
+        resto = num % 10;        // Obtém o último dígito do número
+        inverso = inverso * 10 + resto; // Adiciona o dígito ao número invertido
+        num /= 10;               // Remove o último dígito do número
+    }
+
+    // Exibe o número original e o número invertido
+    printf("Número original: %d\n", num_original);
+    printf("Número invertido: %d\n", inverso);
+
+    return 0;
+}

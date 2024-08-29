@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+int main() {
+    int i, j, k;
+    int matriz1[3][3], matriz2[3][3], resultado[3][3];
+
+    // Entrada dos elementos da primeira matriz
+    printf("Digite os elementos da primeira matriz 3x3:\n");
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            printf("Elemento [%d][%d]: ", i + 1, j + 1);
+            scanf("%d", &matriz1[i][j]);
+        }
+    }
+
+    // Entrada dos elementos da segunda matriz
+    printf("Digite os elementos da segunda matriz 3x3:\n");
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            printf("Elemento [%d][%d]: ", i + 1, j + 1);
+            scanf("%d", &matriz2[i][j]);
+        }
+    }
+
+    // Multiplicação das duas matrizes
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            resultado[i][j] = 0; // Inicializa o elemento da matriz resultado com 0
+            for (k = 0; k < 3; k++) {
+                resultado[i][j] += matriz1[i][k] * matriz2[k][j];
+            }
+        }
+    }
+
+    // Exibição da matriz resultante
+    printf("\nO produto das duas matrizes e:\n");
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            printf("%d ", resultado[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}

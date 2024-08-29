@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX 100 // Definição do tamanho máximo da pilha
+
+// Função para verificar a precedência dos operadores
+int precedencia(char op) {
+    switch (op) {
+        case '+':
+        case '-':
+            return 1;
+        case '*':
+        case '/':
+            return 2;
+        case '^':
+            return 3;
+        default:
+            return 0;
+    }
+}
+
+// Função para verificar se o caractere é um operador
+int ehOperador(char c) {
+    return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^');
+}
+
+// Função para empilhar um caractere
+void empilhar(char *pilha, int *topo, char c) {
+    pilha[++(*topo)] = c;
+}
+
+// Função para desempilhar um caractere
+char desempilhar(char *pilha, int *topo) {
+    return pilha[(*topo)--];
+}
+
+// Função para converter infixa para pós-fixa
+void infixaParaPosfixa(const char *expressao, char *resultado) {
+    char pilha[MAX];
+    int topo = -1;
+    int j = 0;
+
+    for (int i = 0; expressao[i] != '\0'; i++) {
+        char c = expressao[i];
+
+        // Ignorar espaços
+        if (isspace(c)) {
+            continue;
+        }
+
+        // Se o caractere for um número, adicione-o ao resultado
+        if (isdigit(c)) {
+            // Adiciona o número completo ao resultado
+            while (isdigit(c)) {
+                resultado[j++] = c;
+                c = expressao[++i];
+            }
+            resultado[j++] = ' '; // Espaço para separar números
+            i--; // Ajusta o índice após sair do loop de dígitos
+        } else if (c == '(') {
+            empilhar(pilha, &topo, c);
+        } else if (c == ')') {
+            while (topo != -1 && pilha[topo] != '(') {
+                resultado[j++] = desempilhar(pilha, &topo);
+                resultado[j++] = ' ';
+            }
+            topo--; // Remove o '(' da pilha
+        } else if (ehOperador(c)) {
+            while (topo != -1 && precedencia(pilha[topo]) >= precedencia(c)) {
+                resultado[j++] = desempilhar(pilha, &topo);
+                resultado[j++] = ' ';
+            }
+            empilhar(pilha, &topo, c);
+        }
+    }
+
+    // Remove todos os operadores restantes da pilha
+    while (topo != -1) {
+        resultado[j++] = desempilhar(pilha, &topo);
+        resultado[j++] = ' ';
+    }
+
+    resultado[j] = '\0'; // Finaliza a string
+}
+
+int main() {
+    char infixa[MAX];
+    char posfixa[MAX];
+
+    printf("Digite a expressão infixa: ");
+    fgets(infixa, sizeof(infixa), stdin);
+
+    // Remove o caractere de nova linha, se houver
+    char *pos;
+    if ((pos = strchr(infixa, '\n')) != NULL) {
+        *pos = '\0';
+    }
+
+    infixaParaPosfixa(infixa, posfixa);
+
+    printf("Expressão pós-fixa: %s\n", posfixa);
+
+    return 0;
+}

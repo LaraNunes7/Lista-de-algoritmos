@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+int main() {
+    // Declaração das variáveis para armazenar os números
+    int numero1, numero2, soma;
+
+    // Solicita ao usuário para inserir o primeiro número
+    printf ("Digite o primeiro número:");
+    
+    scanf("%i", &numero1);
+
+    // Solicita ao usuário para inserir o segundo número
+    printf ("Digite o segundo número:");
+    scanf ("%i", &numero2);
+
+    // Calcula a soma dos dois números
+    soma = numero1 + numero2;
+
+    // Exibe o resultado
+     printf ("A soma dos números é: %i", soma);
+     
+    return 0;
+}

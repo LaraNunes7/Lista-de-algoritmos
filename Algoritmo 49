@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 100
+
+// Função para verificar se um padrão está presente no vetor de dados
+bool reconhecerPadrao(int dados[], int tamanhoDados, int padrao[], int tamanhoPadrao) {
+    for (int i = 0; i <= tamanhoDados - tamanhoPadrao; i++) {
+        int j;
+        for (j = 0; j < tamanhoPadrao; j++) {
+            if (dados[i + j] != padrao[j]) {
+                break;
+            }
+        }
+        if (j == tamanhoPadrao) {
+            return true;  // Padrão encontrado
+        }
+    }
+    return false;  // Padrão não encontrado
+}
+
+int main() {
+    int dados[MAX_SIZE];
+    int padrao[MAX_SIZE];
+    int tamanhoDados, tamanhoPadrao;
+
+    // Entrada de dados
+    printf("Digite o número de elementos no vetor de dados: ");
+    scanf("%d", &tamanhoDados);
+    
+    printf("Digite os elementos do vetor de dados:\n");
+    for (int i = 0; i < tamanhoDados; i++) {
+        scanf("%d", &dados[i]);
+    }
+
+    printf("Digite o número de elementos no vetor de padrão: ");
+    scanf("%d", &tamanhoPadrao);
+
+    printf("Digite os elementos do vetor de padrão:\n");
+    for (int i = 0; i < tamanhoPadrao; i++) {
+        scanf("%d", &padrao[i]);
+    }
+
+    // Verificação do padrão
+    if (reconhecerPadrao(dados, tamanhoDados, padrao, tamanhoPadrao)) {
+        printf("Padrão encontrado no vetor de dados.\n");
+    } else {
+        printf("Padrão não encontrado no vetor de dados.\n");
+    }
+
+    return 0;
+}

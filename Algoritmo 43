@@ -1,0 +1,58 @@
+
+#include <stdio.h>
+
+void encontrar_maior_subsequencia_crescente(int arr[], int n) {
+    int i, j;
+    int maior[n]; // Array para armazenar o comprimento da maior subsequência
+    int max_len = 0; // Comprimento máximo da subsequência
+    int indice_max = 0; // Índice da última posição da maior subsequência
+
+    // Inicializa o array maior com 1, pois a menor subsequência é o próprio elemento
+    for (i = 0; i < n; i++) {
+        maior[i] = 1;
+    }
+
+    // Preenche o array maior com o comprimento das subsequências
+    for (i = 1; i < n; i++) {
+        for (j = 0; j < i; j++) {
+            if (arr[i] > arr[j] && maior[i] < maior[j] + 1) {
+                maior[i] = maior[j] + 1;
+            }
+        }
+    }
+
+    // Encontra o comprimento máximo da subsequência
+    for (i = 0; i < n; i++) {
+        if (maior[i] > max_len) {
+            max_len = maior[i];
+            indice_max = i;
+        }
+    }
+
+    // Reconstrói a maior subsequência crescente
+    int subsequencia[max_len];
+    int k = max_len - 1;
+    for (i = indice_max; i >= 0; i--) {
+        if (maior[i] == max_len) {
+            subsequencia[k--] = arr[i];
+            max_len--;
+        }
+    }
+
+    // Exibe a maior subsequência crescente
+    printf("Maior subsequência crescente: ");
+    for (i = 0; i < sizeof(subsequencia) / sizeof(subsequencia[0]); i++) {
+        if (i > 0) printf(", ");
+        printf("%d", subsequencia[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    int arr[] = {10, 22, 9, 33, 21, 50, 41, 60, 80};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    encontrar_maior_subsequencia_crescente(arr, n);
+
+    return 0;
+}

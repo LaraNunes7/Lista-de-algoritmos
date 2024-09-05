@@ -1,0 +1,101 @@
+
+#include <stdio.h>
+#include <stdbool.h>
+
+#define N 9
+
+// Função para imprimir o tabuleiro do Sudoku
+void imprimir_tabuleiro(int tabuleiro[N][N]) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("%d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+// Função para verificar se é seguro colocar um número no tabuleiro
+bool seguro(int tabuleiro[N][N], int linha, int coluna, int num) {
+    // Verifica a linha e a coluna
+    for (int x = 0; x < N; x++) {
+        if (tabuleiro[linha][x] == num || tabuleiro[x][coluna] == num) {
+            return false;
+        }
+    }
+
+    // Verifica o quadrante 3x3
+    int inicio_linha = linha - linha % 3;
+    int inicio_coluna = coluna - coluna % 3;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (tabuleiro[i + inicio_linha][j + inicio_coluna] == num) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+// Função recursiva para resolver o Sudoku
+bool resolver_sudoku(int tabuleiro[N][N]) {
+    int linha, coluna;
+    bool vazio = true;
+
+    // Encontra uma posição vazia
+    for (linha = 0; linha < N; linha++) {
+        for (coluna = 0; coluna < N; coluna++) {
+            if (tabuleiro[linha][coluna] == 0) {
+                vazio = false;
+                break;
+            }
+        }
+        if (!vazio) {
+            break;
+        }
+    }
+
+    // Se não há posição vazia, o Sudoku está resolvido
+    if (vazio) {
+        return true;
+    }
+
+    // Tenta preencher a posição vazia
+    for (int num = 1; num <= N; num++) {
+        if (seguro(tabuleiro, linha, coluna, num)) {
+            tabuleiro[linha][coluna] = num;
+
+            // Recursão
+            if (resolver_sudoku(tabuleiro)) {
+                return true;
+            }
+
+            // Se não for possível, desfaz a escolha
+            tabuleiro[linha][coluna] = 0;
+        }
+    }
+    return false; // Garante que não há solução
+}
+
+int main() {
+    // Tabuleiro de exemplo (0 representa espaços vazios)
+    int tabuleiro[N][N] = {
+        {5, 3, 0, 0, 7, 0, 0, 0, 0},
+        {6, 0, 0, 1, 9, 5, 0, 0, 0},
+        {0, 9, 8, 0, 0, 0, 0, 6, 0},
+        {8, 0, 0, 0, 6, 0, 0, 0, 3},
+        {4, 0, 0, 8, 0, 3, 0, 0, 1},
+        {7, 0, 0, 0, 2, 0, 0, 0, 6},
+        {0, 6, 0, 0, 0, 0, 2, 8, 0},
+        {0, 0, 0, 4, 1, 9, 0, 0, 5},
+        {0, 0, 0, 0, 8, 0, 0, 7, 9}
+    };
+
+    if (resolver_sudoku(tabuleiro)) {
+        printf("Tabuleiro resolvido:\n");
+        imprimir_tabuleiro(tabuleiro);
+    } else {
+        printf("Não há solução para o Sudoku fornecido.\n");
+    }
+
+    return 0;
+}

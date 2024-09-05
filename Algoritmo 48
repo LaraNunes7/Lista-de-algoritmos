@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX_ANDARES 10
+#define MAX_CHAMADAS (MAX_ANDARES * 2)
+
+// Estrutura para representar uma chamada
+typedef struct {
+    int andar;
+    bool paraCima;
+} Chamada;
+
+// Estrutura para representar o elevador
+typedef struct {
+    int andarAtual;
+    bool paraCima;
+    Chamada chamadas[MAX_CHAMADAS];
+    int numChamadas;
+} Elevador;
+
+// Função para inicializar o elevador
+void inicializarElevador(Elevador *elevador) {
+    elevador->andarAtual = 0;
+    elevador->paraCima = true;
+    elevador->numChamadas = 0;
+}
+
+// Função para adicionar uma chamada ao elevador
+void adicionarChamada(Elevador *elevador, int andar, bool paraCima) {
+    if (elevador->numChamadas < MAX_CHAMADAS) {
+        elevador->chamadas[elevador->numChamadas].andar = andar;
+        elevador->chamadas[elevador->numChamadas].paraCima = paraCima;
+        elevador->numChamadas++;
+    } else {
+        printf("Número máximo de chamadas alcançado.\n");
+    }
+}
+
+// Função para mover o elevador para o próximo andar
+void moverElevador(Elevador *elevador) {
+    if (elevador->numChamadas == 0) {
+        printf("Nenhuma chamada pendente.\n");
+        return;
+    }
+
+    // Encontrar a próxima chamada a ser atendida
+    int proximaChamadaIndex = 0;
+    for (int i = 1; i < elevador->numChamadas; i++) {
+        if ((elevador->paraCima && elevador->chamadas[i].andar > elevador->andarAtual) ||
+            (!elevador->paraCima && elevador->chamadas[i].andar < elevador->andarAtual)) {
+            if (elevador->chamadas[i].andar < elevador->chamadas[proximaChamadaIndex].andar) {
+                proximaChamadaIndex = i;
+            }
+        }
+    }
+
+    // Se não houver uma chamada adequada, mude a direção
+    if (elevador->andarAtual == elevador->chamadas[proximaChamadaIndex].andar) {
+        printf("Elevador chegou ao andar %d\n", elevador->andarAtual);
+        // Remover a chamada
+        for (int i = proximaChamadaIndex; i < elevador->numChamadas - 1; i++) {
+            elevador->chamadas[i] = elevador->chamadas[i + 1];
+        }
+        elevador->numChamadas--;
+        if (elevador->numChamadas == 0) {
+            printf("Todas as chamadas foram atendidas.\n");
+            return;
+        }
+    } else {
+        // Mover o elevador
+        if (elevador->andarAtual < elevador->chamadas[proximaChamadaIndex].andar) {
+            elevador->andarAtual++;
+        } else {
+            elevador->andarAtual--;
+        }
+        printf("Elevador movendo para o andar %d\n", elevador->andarAtual);
+    }
+}
+
+// Função para exibir o estado atual do elevador
+void exibirEstadoElevador(Elevador *elevador) {
+    printf("Andar atual: %d\n", elevador->andarAtual);
+    printf("Direção: %s\n", elevador->paraCima ? "Cima" : "Baixo");
+    printf("Chamadas pendentes:\n");
+    for (int i = 0; i < elevador->numChamadas; i++) {
+        printf("Andar: %d, Direção: %s\n", elevador->chamadas[i].andar,
+               elevador->chamadas[i].paraCima ? "Cima" : "Baixo");
+    }
+}
+
+int main() {
+    Elevador elevador;
+    inicializarElevador(&elevador);
+
+    // Adiciona chamadas
+    adicionarChamada(&elevador, 3, true);
+    adicionarChamada(&elevador, 1, false);
+    adicionarChamada(&elevador, 5, true);
+
+    // Simula o movimento do elevador
+    while (elevador.numChamadas > 0) {
+        exibirEstadoElevador(&elevador);
+        moverElevador(&elevador);
+        // Atraso para simulação visual
+        // Note: Em um ambiente real, use uma função como sleep() do <unistd.h>
+        for (volatile int i = 0; i < 100000000; i++);
+    }
+
+    printf("Simulação concluída.\n");
+
+    return 0;
+}

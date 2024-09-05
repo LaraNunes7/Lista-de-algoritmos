@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_VERTICES 100
+#define MAX_ARESTAS 1000
+
+// Estrutura para armazenar uma aresta
+typedef struct {
+    int u, v, peso;
+} Aresta;
+
+// Estrutura para o conjunto disjunto
+typedef struct {
+    int pai;
+    int rank;
+} ConjuntoDisjunto;
+
+// Função para comparar duas arestas
+int compararArestas(const void *a, const void *b) {
+    return ((Aresta *)a)->peso - ((Aresta *)b)->peso;
+}
+
+// Função para encontrar o pai de um vértice
+int encontrar(ConjuntoDisjunto *conjuntos, int i) {
+    if (conjuntos[i].pai != i) {
+        conjuntos[i].pai = encontrar(conjuntos, conjuntos[i].pai);
+    }
+    return conjuntos[i].pai;
+}
+
+// Função para unir dois conjuntos
+void unir(ConjuntoDisjunto *conjuntos, int x, int y) {
+    int raizX = encontrar(conjuntos, x);
+    int raizY = encontrar(conjuntos, y);
+    
+    if (raizX != raizY) {
+        if (conjuntos[raizX].rank < conjuntos[raizY].rank) {
+            conjuntos[raizX].pai = raizY;
+        } else if (conjuntos[raizX].rank > conjuntos[raizY].rank) {
+            conjuntos[raizY].pai = raizX;
+        } else {
+            conjuntos[raizY].pai = raizX;
+            conjuntos[raizX].rank++;
+        }
+    }
+}
+
+// Função para executar o algoritmo de Kruskal
+void kruskal(Aresta arestas[], int numArestas, int numVertices) {
+    ConjuntoDisjunto conjuntos[MAX_VERTICES];
+    
+    // Inicializa o conjunto disjunto
+    for (int i = 0; i < numVertices; i++) {
+        conjuntos[i].pai = i;
+        conjuntos[i].rank = 0;
+    }
+    
+    // Ordena as arestas por peso
+    qsort(arestas, numArestas, sizeof(Aresta), compararArestas);
+    
+    printf("Arestas na árvore geradora mínima:\n");
+    
+    int custoTotal = 0;
+    
+    // Itera sobre as arestas ordenadas
+    for (int i = 0; i < numArestas; i++) {
+        int u = arestas[i].u;
+        int v = arestas[i].v;
+        int peso = arestas[i].peso;
+        
+        // Se a aresta não forma um ciclo
+        if (encontrar(conjuntos, u) != encontrar(conjuntos, v)) {
+            printf("%d - %d: %d\n", u, v, peso);
+            custoTotal += peso;
+            unir(conjuntos, u, v);
+        }
+    }
+    
+    printf("Custo total da MST: %d\n", custoTotal);
+}
+
+int main() {
+    int numVertices, numArestas;
+    printf("Digite o número de vértices e arestas: ");
+    scanf("%d %d", &numVertices, &numArestas);
+    
+    Aresta arestas[MAX_ARESTAS];
+    
+    printf("Digite as arestas (v1 v2 peso):\n");
+    for (int i = 0; i < numArestas; i++) {
+        scanf("%d %d %d", &arestas[i].u, &arestas[i].v, &arestas[i].peso);
+    }
+    
+    kruskal(arestas, numArestas, numVertices);
+    
+    return 0;
+}

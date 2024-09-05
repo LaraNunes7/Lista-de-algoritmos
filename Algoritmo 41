@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <ctype.h>
+
+#define ALFABETO 26 // Número de letras no alfabeto
+
+// Função para criptografar uma mensagem usando a Cifra de César
+void cifraCesar(char *mensagem, int deslocamento) {
+    while (*mensagem) {
+        // Criptografa caracteres maiúsculos
+        if (isupper(*mensagem)) {
+            *mensagem = ((*mensagem - 'A' + deslocamento) % ALFABETO + ALFABETO) % ALFABETO + 'A';
+        }
+        // Criptografa caracteres minúsculos
+        else if (islower(*mensagem)) {
+            *mensagem = ((*mensagem - 'a' + deslocamento) % ALFABETO + ALFABETO) % ALFABETO + 'a';
+        }
+        mensagem++;
+    }
+}
+
+// Função para descriptografar uma mensagem usando a Cifra de César
+void decifraCesar(char *mensagem, int deslocamento) {
+    cifraCesar(mensagem, -deslocamento);
+}
+
+int main() {
+    char mensagem[100];
+    int deslocamento;
+
+    printf("Digite a mensagem: ");
+    fgets(mensagem, sizeof(mensagem), stdin);
+
+    // Remove o caractere de nova linha, se houver
+    char *pos;
+    if ((pos = strchr(mensagem, '\n')) != NULL) {
+        *pos = '\0';
+    }
+
+    printf("Digite o deslocamento (número inteiro): ");
+    scanf("%d", &deslocamento);
+
+    // Criptografa a mensagem
+    cifraCesar(mensagem, deslocamento);
+    printf("Mensagem criptografada: %s\n", mensagem);
+
+    // Descriptografa a mensagem
+    decifraCesar(mensagem, deslocamento);
+    printf("Mensagem descriptografada: %s\n", mensagem);
+
+    return 0;
+}

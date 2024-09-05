@@ -1,0 +1,69 @@
+
+#include <stdio.h>
+
+#define TAMANHO_TABULEIRO 8
+
+// Função para imprimir o tabuleiro
+void imprimir_tabuleiro(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO]) {
+    for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
+        for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
+            if (tabuleiro[i][j]) {
+                printf("1 "); // Posição válida para o cavalo
+            } else {
+                printf("0 "); // Posição inválida
+            }
+        }
+        printf("\n");
+    }
+}
+
+// Função para verificar se a posição está dentro dos limites do tabuleiro
+int posicao_valida(int x, int y) {
+    return (x >= 0 && x < TAMANHO_TABULEIRO && y >= 0 && y < TAMANHO_TABULEIRO);
+}
+
+// Função para simular os movimentos do cavalo
+void movimentos_cavalo(int x, int y) {
+    // Movimentos possíveis do cavalo
+    int movimentos[8][2] = {
+        {2, 1}, {1, 2}, {-1, 2}, {-2, 1},
+        {-2, -1}, {-1, -2}, {1, -2}, {2, -1}
+    };
+
+    // Tabuleiro para registrar as posições alcançadas
+    int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO] = {0};
+
+    // Marca a posição inicial
+    tabuleiro[x][y] = 1;
+
+    // Verifica cada movimento possível
+    for (int i = 0; i < 8; i++) {
+        int nova_x = x + movimentos[i][0];
+        int nova_y = y + movimentos[i][1];
+        
+        if (posicao_valida(nova_x, nova_y)) {
+            tabuleiro[nova_x][nova_y] = 1; // Marca a posição válida
+        }
+    }
+
+    // Imprime o tabuleiro com as posições alcançadas pelo cavalo
+    printf("Movimentos do cavalo a partir da posição (%d, %d):\n", x, y);
+    imprimir_tabuleiro(tabuleiro);
+}
+
+int main() {
+    int x, y;
+
+    // Solicita a posição inicial do cavalo
+    printf("Digite a posição inicial do cavalo (x y): ");
+    scanf("%d %d", &x, &y);
+
+    // Verifica se a posição está dentro dos limites do tabuleiro
+    if (posicao_valida(x, y)) {
+        movimentos_cavalo(x, y);
+    } else {
+        printf("Posição inválida. As coordenadas devem estar entre 0 e 7.\n");
+    }
+
+    return 0;
+}
